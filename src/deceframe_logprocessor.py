@@ -39,14 +39,20 @@ class JsonToNeo4j:
 serverSocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 serverSocket.bind(('127.0.0.1', 8088))
 serverSocket.listen(5)  # become a server socket, maximum 5 connections
+connection, address = serverSocket.accept()
 
+buf=''
 while True:
-    connection, address = serverSocket.accept()
-    buf = connection.recv(64)
-    if len(buf) > 0:
-        JsonToNeo4j().import_content(buf);
+    data = connection.recv(1024)
+    if len(data) > 0:
+        buf += data.decode('utf-8')
+        print(buf)
+    else:
         break
+
+JsonToNeo4j().import_content(buf);
+
 
 if __name__ == "__main__":
     app.run()
-    socketio.run(app, host='0.0.0.0')
+#   socketio.run(app, host='0.0.0.0')
