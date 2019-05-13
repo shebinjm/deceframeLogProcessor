@@ -4,9 +4,11 @@ import socket
 from flask import Flask
 import threading
 from flask_socketio import SocketIO
+import eventlet
+eventlet.monkey_patch()
 
 app = Flask(__name__)
-socketio = SocketIO(app)
+socketio = SocketIO(app, ping_timeout=30, logger=False, engineio_logger=False)
 
 
 def import_content(data):
@@ -65,5 +67,5 @@ if __name__ == '__main__':
     t1 = threading.Thread(target=app1)
     t1.start()
     #app.run(threaded=True)
-    socketio.run(app)
+    socketio.run(app, host='0.0.0.0')
     t1.join()
