@@ -42,7 +42,7 @@ def import_content(data):
     MERGE (m)-[:occured]->(c)
     """
     print(graph.run(query, json=data_json))
-    print('send message successfully1')
+    print('saved to db successfully')
 
 def app1():
 
